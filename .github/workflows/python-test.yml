@@ -2,7 +2,11 @@ name: Python Tests
 on:
   workflow_call:
     inputs:
-      cache-key:
+      cache-prefix:
+        required: false
+        type: string
+        default: ''
+      cache-config-path:
         required: false
         type: string
       cache-path:
@@ -122,11 +126,11 @@ jobs:
           echo "pytest-cov options that will be used are: $PYTESTCOV"
           echo "PYTESTCOV=$PYTESTCOV" >> $GITHUB_ENV
       - name: Restore cache (optional)
-        if: ${{ inputs.cache-key != '' && inputs.cache-path != '' }}
+        if: ${{ inputs.cache-config-path != '' && inputs.cache-path != '' }}
         uses: actions/cache@v4
         with:
           path: ${{ inputs.cache-path }}
-          key: ${{ inputs.cache-key }}
+          key: ${{ inputs.cache-prefix }}${{ hashFiles(inputs.cache-config-path) }}
       - name: Run pytest
         run: |
           export PYTHONPATH=${PYTHONPATH}:${{ inputs.python_path }}
