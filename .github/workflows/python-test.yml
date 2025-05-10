@@ -134,7 +134,7 @@ jobs:
       - name: Run pytest
         run: |
           export PYTHONPATH=${PYTHONPATH}:${{ inputs.python_path }}
-          export PYTEST_COMMAND="pytest $PYTESTCOV $PYTESTXDIST -s"
+          export PYTEST_COMMAND="pytest -s"
           echo "Will be running this command: $PYTEST_COMMAND"
           if [ ${{ inputs.test_dir }} != '' ]; then cd ${{ inputs.test_dir }}; fi
           eval $PYTEST_COMMAND
